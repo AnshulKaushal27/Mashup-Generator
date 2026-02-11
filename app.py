@@ -35,7 +35,7 @@ if "processing" not in st.session_state:
     st.session_state.processing = False
 
 singer_name = st.text_input("🎤 Singer Name")
-num_videos = st.slider("🎶 Number of Songs", 1, 5, 3)
+num_videos = st.slider("🎶 Number of Songs", 1, 3, 2)  # reduced for cloud safety
 
 length_option = st.radio(
     "🎧 Select Audio Length",
@@ -43,7 +43,7 @@ length_option = st.radio(
 )
 
 if length_option == "Custom Duration":
-    duration = st.slider("⏱ Duration per Song (seconds)", 5, 60, 20)
+    duration = st.slider("⏱ Duration per Song (seconds)", 5, 30, 10)
 else:
     duration = 0
 
@@ -59,7 +59,7 @@ if st.button("Generate Mashup 🎧") and not st.session_state.processing:
         st.session_state.processing = True
 
         with st.spinner("Creating your mashup... 🎧"):
-            mp3_file, zip_file, temp_dir = create_mashup(
+            mp3_file, zip_file, error = create_mashup(
                 singer_name,
                 num_videos,
                 duration,
@@ -68,7 +68,13 @@ if st.button("Generate Mashup 🎧") and not st.session_state.processing:
 
         st.session_state.processing = False
 
-        if mp3_file and os.path.exists(mp3_file):
+        # ✅ If there was an error
+        if error:
+            st.error("Error occurred:")
+            st.write(error)
+
+        # ✅ If mashup created successfully
+        elif mp3_file and os.path.exists(mp3_file):
 
             st.success("Mashup Created Successfully! 🎉")
 
@@ -82,13 +88,8 @@ if st.button("Generate Mashup 🎧") and not st.session_state.processing:
                     mime="application/zip"
                 )
 
-            # Clean temporary folder after use
-            shutil.rmtree(temp_dir, ignore_errors=True)
-
         else:
-            st.error("Error occurred:")
-            st.write(zip_file)  # This will show actual error message
-
+            st.error("Unknown error occurred.")
 
     else:
         st.warning("Please fill all fields.")
