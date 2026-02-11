@@ -4,7 +4,7 @@ import os
 import shutil
 
 st.set_page_config(
-    page_title="Spotify Mashup Generator",
+    page_title="Songs Mashup Generator",
     page_icon="🎵",
     layout="centered"
 )
@@ -29,7 +29,7 @@ h1 { color: #1DB954; text-align: center; }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🎵 Spotify Mashup Generator")
+st.title("🎵 Songs Mashup Generator")
 
 if "processing" not in st.session_state:
     st.session_state.processing = False
