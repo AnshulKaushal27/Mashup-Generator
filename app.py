@@ -86,7 +86,9 @@ if st.button("Generate Mashup 🎧") and not st.session_state.processing:
             shutil.rmtree(temp_dir, ignore_errors=True)
 
         else:
-            st.error("Something went wrong. Please try again.")
+            st.error("Error occurred:")
+            st.write(zip_file)  # This will show actual error message
+
 
     else:
         st.warning("Please fill all fields.")
