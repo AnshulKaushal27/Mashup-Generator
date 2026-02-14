@@ -16,15 +16,21 @@ def create_mashup(singer_name, num_videos, duration, output_filename):
             'format': 'bestaudio/best',
             'outtmpl': f'{download_path}/%(title)s.%(ext)s',
             'quiet': True,
-            'match_filter': lambda info, *, incomplete: (
-                None if info.get('duration', 0) <= 600 else 'Video longer than 10 minutes'
-            ),
+            'noplaylist': True,
+            'nocheckcertificate': True,
+            'ignoreerrors': True,
+            'geo_bypass': True,
+            'geo_bypass_country': 'US',
+            'http_headers': {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+            },
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }]
         }
+
 
         search_query = f"{singer_name} popular song -live -mashup -dj"
 
